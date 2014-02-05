@@ -1,7 +1,7 @@
 ﻿; ===================================================================================
 ; AHK Version ...: AHK_L 1.1.14.02 x64 Unicode
 ; Win Version ...: Windows 7 Professional x64 SP1
-; Description ...: Hash from String / File / Address
+; Description ...: Hash from String / Hex / File / Address
 ;                  http://en.wikipedia.org/wiki/Hash_function
 ;                  http://en.wikipedia.org/wiki/Cryptographic_hash_function
 ; Version .......: 2014.02.03-1747
@@ -28,6 +28,16 @@ MsgBox, % "String:`n" (str) "`n`n"
         . "SHA384:`n" SHA384(str) "`n`n"
         . "SHA512:`n" SHA512(str) "`n"
 
+hex := "54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f67"
+MsgBox, % "Hex:`n" (hex) "`n`n"
+        . "MD2:`n" HexMD2(hex) "`n`n"
+        . "MD4:`n" HexMD4(hex) "`n`n"
+        . "MD5:`n" HexMD5(hex) "`n`n"
+        . "SHA:`n" HexSHA(hex) "`n`n"
+        . "SHA256:`n" HexSHA256(hex) "`n`n"
+        . "SHA384:`n" HexSHA384(hex) "`n`n"
+        . "SHA512:`n" HexSHA512(hex) "`n"
+
 file := "C:\Windows\notepad.exe"
 MsgBox, % "File:`n" (file) "`n`n"
         . "MD2:`n" FileMD2(file) "`n`n"
@@ -42,9 +52,13 @@ ExitApp
 
 
 ; MD2 ===============================================================================
-MD2(string, encoding = "utf-8")
+MD2(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x8001, encoding)
+}
+HexMD2(hexstring)
+{
+    return CalcHexHash(hexstring, 0x8001)
 }
 FileMD2(filename)
 {
@@ -55,9 +69,13 @@ AddrMD2(addr, length)
     return CalcAddrHash(addr, length, 0x8001)
 }
 ; MD4 ===============================================================================
-MD4(string, encoding = "utf-8")
+MD4(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x8002, encoding)
+}
+HexMD4(hexstring)
+{
+	return CalcHexHash(hexstring, 0x8002)
 }
 FileMD4(filename)
 {
@@ -68,9 +86,13 @@ AddrMD4(addr, length)
     return CalcAddrHash(addr, length, 0x8002)
 }
 ; MD5 ===============================================================================
-MD5(string, encoding = "utf-8")
+MD5(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x8003, encoding)
+}
+HexMD5(hexstring)
+{
+	return CalcHexHash(hexstring, 0x8003)
 }
 FileMD5(filename)
 {
@@ -81,9 +103,13 @@ AddrMD5(addr, length)
     return CalcAddrHash(addr, length, 0x8003)
 }
 ; SHA ===============================================================================
-SHA(string, encoding = "utf-8")
+SHA(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x8004, encoding)
+}
+HexSHA(hexstring)
+{
+	return CalcHexHash(hexstring, 0x8004)
 }
 FileSHA(filename)
 {
@@ -94,9 +120,13 @@ AddrSHA(addr, length)
     return CalcAddrHash(addr, length, 0x8004)
 }
 ; SHA256 ============================================================================
-SHA256(string, encoding = "utf-8")
+SHA256(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x800c, encoding)
+}
+HexSHA256(hexstring)
+{
+	return CalcHexHash(hexstring, 0x800c)
 }
 FileSHA256(filename)
 {
@@ -107,9 +137,13 @@ AddrSHA256(addr, length)
     return CalcAddrHash(addr, length, 0x800c)
 }
 ; SHA384 ============================================================================
-SHA384(string, encoding = "utf-8")
+SHA384(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x800d, encoding)
+}
+HexSHA384(hexstring)
+{
+	return CalcHexHash(hexstring, 0x800d)
 }
 FileSHA384(filename)
 {
@@ -120,9 +154,13 @@ AddrSHA384(addr, length)
     return CalcAddrHash(addr, length, 0x800d)
 }
 ; SHA512 ============================================================================
-SHA512(string, encoding = "utf-8")
+SHA512(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x800e, encoding)
+}
+HexSHA512(hexstring)
+{
+	return CalcHexHash(hexstring, 0x800e)
 }
 FileSHA512(filename)
 {
@@ -174,6 +212,18 @@ CalcStringHash(string, algid, encoding = "UTF-8", byref hash = 0, byref hashleng
     VarSetCapacity(data, length, 0)
     StrPut(string, &data, floor(length / chrlength), encoding)
     return CalcAddrHash(&data, length, algid, hash, hashlength)
+}
+
+; CalcHexHash =======================================================================
+CalcHexHash(hexstring, algid)
+{
+    length := StrLen(hexstring) // 2
+    VarSetCapacity(data, length, 0)
+    loop % length
+    {
+        NumPut("0x" SubStr(hexstring, 2 * A_Index -1, 2), data, A_Index - 1, "Char")
+    }
+    return, CalcAddrHash(&data, length, algid)
 }
 
 ; CalcFileHash ======================================================================

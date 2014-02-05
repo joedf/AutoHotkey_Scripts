@@ -2,9 +2,9 @@
 ; AHK Version ...: AHK_L 1.1.14.02 x64 Unicode
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: Checksum: SHA-512
-;                  Calc SHA-512-Hash from String / File / Address
+;                  Calc SHA-512-Hash from String / Hex / File / Address
 ;                  http://en.wikipedia.org/wiki/SHA-2
-; Version .......: 2014.02.03-1747
+; Version .......: 2014.02.05-1022
 ; Author ........: Bentschi
 ; Modified ......: jNizM
 ; ===================================================================================
@@ -21,6 +21,9 @@ SetBatchLines, -1
 str := "The quick brown fox jumps over the lazy dog"
 MsgBox, % "String:`n" (str) "`n`nSHA-512:`n" SHA512(str)
 
+hex := "54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f67"
+MsgBox, % "Hex:`n" (hex) "`n`nSHA-512:`n" HexSHA512(hex)
+
 file := "C:\Windows\notepad.exe"
 MsgBox, % "File:`n" (file) "`n`nSHA-512:`n" FileSHA512(file)
 
@@ -28,9 +31,13 @@ ExitApp
 
 
 ; SHA512 ============================================================================
-SHA512(string, encoding = "utf-8")
+SHA512(string, encoding = "UTF-8")
 {
     return CalcStringHash(string, 0x800e, encoding)
+}
+HexSHA512(hexstring)
+{
+	return CalcHexHash(hexstring, 0x800e)
 }
 FileSHA512(filename)
 {
@@ -81,6 +88,18 @@ CalcStringHash(string, algid, encoding = "UTF-8", byref hash = 0, byref hashleng
     VarSetCapacity(data, length, 0)
     StrPut(string, &data, floor(length / chrlength), encoding)
     return CalcAddrHash(&data, length, algid, hash, hashlength)
+}
+
+; CalcHexHash =======================================================================
+CalcHexHash(hexstring, algid)
+{
+    length := StrLen(hexstring) // 2
+    VarSetCapacity(data, length, 0)
+    loop % length
+    {
+        NumPut("0x" SubStr(hexstring, 2 * A_Index -1, 2), data, A_Index - 1, "Char")
+    }
+    return, CalcAddrHash(&data, length, algid)
 }
 
 ; CalcFileHash ======================================================================
