@@ -3,7 +3,7 @@
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: HMAC Hash
 ;                  https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
-; Version .......: 2014.02.03-1747
+; Version .......: 2014.02.19-1247
 ; Author ........: just me (HMAC)
 ; Author ........: Bentschi (Hash)
 ; Modified ......: jNizM
@@ -33,7 +33,7 @@ MsgBox, % "Message:`t`t" message "`nKey:`t`t" key "`n`n"
 ExitApp
 
 
-; SecureSalted ======================================================================
+; HMAC ==============================================================================
 HMAC(Key, Message, Algo := "MD5")
 {
     static Algorithms := {MD2: {ID: 0x8001, Size: 64}
@@ -49,7 +49,7 @@ HMAC(Key, Message, Algo := "MD5")
     {
         return ""
     }
-    Hash := InnerHashLen := ""
+    Hash := KeyHashLen := InnerHashLen := ""
     HashLen := 0
     AlgID := Algorithms[Algo].ID
     BlockSize := Algorithms[Algo].Size
@@ -94,7 +94,7 @@ HMAC(Key, Message, Algo := "MD5")
         i++
     }
     return CalcAddrHash(&opad, BlockSize + InnerHashLen, AlgID)
-} 
+}
 
 
 ; MD2 ===============================================================================
@@ -160,7 +160,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
             }
             DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
         }
-        DllCall("advapi32\CryPtreleaseContext", "Ptr", hProv, "UInt", 0)
+        DllCall("advapi32\CryptreleaseContext", "Ptr", hProv, "UInt", 0)
     }
     return o
 }

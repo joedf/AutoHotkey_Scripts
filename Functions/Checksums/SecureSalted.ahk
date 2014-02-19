@@ -52,7 +52,6 @@ SecureSalted(salt, message, algo := "md5")
 }
 
 
-
 ; MD2 ===============================================================================
 MD2(string, encoding = "UTF-8")
 {
@@ -116,7 +115,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
             }
             DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
         }
-        DllCall("advapi32\CryPtreleaseContext", "Ptr", hProv, "UInt", 0)
+        DllCall("advapi32\CryptreleaseContext", "Ptr", hProv, "UInt", 0)
     }
     return o
 }
