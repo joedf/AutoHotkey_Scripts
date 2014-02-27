@@ -1,9 +1,9 @@
 ﻿; ===================================================================================
-; AHK Version ...: AHK_L 1.1.14.02 x64 Unicode
+; AHK Version ...: AHK_L 1.1.14.03 x64 Unicode
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: HMAC Hash
 ;                  https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
-; Version .......: 2014.02.19-1247
+; Version .......: 2014.02.26-1986
 ; Author ........: just me (HMAC)
 ; Author ........: Bentschi (Hash)
 ; Modified ......: jNizM
@@ -150,7 +150,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
                     VarSetCapacity(hash, hashlength, 0)
                     if (DllCall("advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", &hash, "UInt*", hashlength, "UInt", 0))
                     {
-                        loop, % hashlength
+                        loop % hashlength
                         {
                             v := NumGet(hash, A_Index - 1, "UChar")
                             o .= h[(v >> 4) + b] h[(v & 0xf) + b]

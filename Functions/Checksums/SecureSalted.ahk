@@ -1,9 +1,9 @@
 ﻿; ===================================================================================
-; AHK Version ...: AHK_L 1.1.14.02 x64 Unicode
+; AHK Version ...: AHK_L 1.1.14.03 x64 Unicode
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: SecureSalted Hash
 ;                  https://en.wikipedia.org/wiki/Salt_(cryptography)
-; Version .......: 2014.02.03-1747
+; Version .......: 2014.02.26-1986
 ; Author ........: IsNull (SecureSalted)
 ; Author ........: Bentschi (Hash)
 ; Modified ......: jNizM
@@ -40,7 +40,7 @@ SecureSalted(salt, message, algo := "md5")
     saltedHash := %algo%(message . salt) 
     saltedHashR := %algo%(salt . message)
     len := StrLen(saltedHash)
-    loop, % len / 2
+    loop % len / 2
     {
         byte1 := "0x" . SubStr(saltedHash, 2 * A_index - 1, 2)
         byte2 := "0x" . SubStr(saltedHashR, 2 * A_index - 1, 2)
@@ -105,7 +105,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
                     VarSetCapacity(hash, hashlength, 0)
                     if (DllCall("advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", &hash, "UInt*", hashlength, "UInt", 0))
                     {
-                        loop, % hashlength
+                        loop % hashlength
                         {
                             v := NumGet(hash, A_Index - 1, "UChar")
                             o .= h[(v >> 4) + b] h[(v & 0xf) + b]

@@ -1,10 +1,10 @@
 ﻿; ===================================================================================
-; AHK Version ...: AHK_L 1.1.14.02 x64 Unicode
+; AHK Version ...: AHK_L 1.1.14.03 x64 Unicode
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: Checksum: MD5
 ;                  Calc MD5-Hash from String / Hex / File / Address
 ;                  http://en.wikipedia.org/wiki/MD5
-; Version .......: 2014.02.05-1022
+; Version .......: 2014.02.26-1986
 ; Author ........: Bentschi
 ; Modified ......: jNizM
 ; ===================================================================================
@@ -65,7 +65,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
                     VarSetCapacity(hash, hashlength, 0)
                     if (DllCall("advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", &hash, "UInt*", hashlength, "UInt", 0))
                     {
-                        loop, % hashlength
+                        loop % hashlength
                         {
                             v := NumGet(hash, A_Index - 1, "UChar")
                             o .= h[(v >> 4) + b] h[(v & 0xf) + b]
@@ -75,7 +75,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
             }
             DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
         }
-        DllCall("advapi32\CryPtreleaseContext", "Ptr", hProv, "UInt", 0)
+        DllCall("advapi32\CryptreleaseContext", "Ptr", hProv, "UInt", 0)
     }
     return o
 }
@@ -99,7 +99,7 @@ CalcHexHash(hexstring, algid)
     {
         NumPut("0x" SubStr(hexstring, 2 * A_Index -1, 2), data, A_Index - 1, "Char")
     }
-    return, CalcAddrHash(&data, length, algid)
+    return CalcAddrHash(&data, length, algid)
 }
 
 ; CalcFileHash ======================================================================

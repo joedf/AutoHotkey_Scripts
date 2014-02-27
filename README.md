@@ -3,11 +3,14 @@ A collection of useful AutoHotkey scripts and functions
 
 
 ### Checksums
+Hash from String, Hex & File
+* CRC32
 * MD2, MD4, MD5
 * SHA-1
 * SHA-256, SHA-384, SHA-512
 * HMAC
 * Secure Salted
+
 
 
 ## Contributing
