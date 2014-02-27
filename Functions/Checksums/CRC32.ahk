@@ -40,7 +40,7 @@ CRC32(string, encoding = "UTF-8")
     SetFormat, Integer, % SubStr((A_FI := A_FormatInteger) "H", 0)
     CRC32 := DllCall("NTDLL\RtlComputeCrc32", "UInt", 0, "UInt", &data, "UInt", length, "UInt")
     CRC := SubStr(CRC32 | 0x1000000000, -7)
-	DllCall("User32.dll\CharLower", "Str", CRC)
+    DllCall("User32.dll\CharLower", "Str", CRC)
     SetFormat, Integer, %A_FI%
     return CRC
 }
@@ -57,7 +57,7 @@ HexCRC32(hexstring)
     SetFormat, Integer, % SubStr((A_FI := A_FormatInteger) "H", 0)
     CRC32 := DllCall("NTDLL\RtlComputeCrc32", "UInt", 0, "UInt", &data, "UInt", length, "UInt")
     CRC := SubStr(CRC32 | 0x1000000000, -7)
-	DllCall("User32.dll\CharLower", "Str", CRC)
+    DllCall("User32.dll\CharLower", "Str", CRC)
     SetFormat, Integer, %A_FI%
     return CRC
 }
