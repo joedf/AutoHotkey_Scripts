@@ -11,6 +11,12 @@ Hash from String, Hex & File
 * HMAC
 * Secure Salted
 
+### Conversion
+* BaseConversion
+* Binary <--> Octal
+* Decimal <--> Binary
+* Decimal <--> Octal
+
 
 
 ## Contributing

@@ -3,7 +3,7 @@
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: HMAC Hash
 ;                  https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
-; Version .......: 2014.02.26-1986
+; Version .......: 2014.04.09-1828
 ; Author ........: just me (HMAC)
 ; Author ........: Bentschi (Hash)
 ; Modified ......: jNizM
@@ -21,11 +21,11 @@ SetBatchLines, -1
 message := "The quick brown fox jumps over the lazy dog"
 key     := "key"
 
-MsgBox, % "Message:`t`t" message "`nKey:`t`t" key "`n`n"
-        . "MD2:`t`t" MD2(message) "`nMD2 + HMAC:`t" HMAC(key, message, "md2") "`n`n"
-        . "MD4:`t`t" MD4(message) "`nMD4 + HMAC:`t" HMAC(key, message, "md4") "`n`n"
-        . "MD5:`t`t" MD5(message) "`nMD5 + HMAC:`t" HMAC(key, message, "md5") "`n`n"
-        . "SHA:`t`t" SHA(message) "`nSHA + HMAC:`t" HMAC(key, message, "sha") "`n`n"
+MsgBox, % "Message:`t`t"      (message) "`nKey:`t`t"             (key)                    "`n`n"
+        . "MD2:`t`t"       MD2(message) "`nMD2 + HMAC:`t"    HMAC(key, message, "md2")    "`n`n"
+        . "MD4:`t`t"       MD4(message) "`nMD4 + HMAC:`t"    HMAC(key, message, "md4")    "`n`n"
+        . "MD5:`t`t"       MD5(message) "`nMD5 + HMAC:`t"    HMAC(key, message, "md5")    "`n`n"
+        . "SHA:`t`t"       SHA(message) "`nSHA + HMAC:`t"    HMAC(key, message, "sha")    "`n`n"
         . "SHA256:`t`t" SHA256(message) "`nSHA256 + HMAC:`t" HMAC(key, message, "sha256") "`n`n"
         . "SHA384:`t`t" SHA384(message) "`nSHA384 + HMAC:`t" HMAC(key, message, "sha384") "`n`n"
         . "SHA512:`t`t" SHA512(message) "`nSHA512 + HMAC:`t" HMAC(key, message, "sha512")
@@ -36,16 +36,16 @@ ExitApp
 ; HMAC ==============================================================================
 HMAC(Key, Message, Algo := "MD5")
 {
-    static Algorithms := {MD2: {ID: 0x8001, Size: 64}
-                        , MD4: {ID: 0x8002, Size: 64}
-                        , MD5: {ID: 0x8003, Size: 64}
-                        , SHA: {ID: 0x8004, Size: 64}
-                        , SHA256: {ID: 0x800C, Size: 64}
+    static Algorithms := {MD2:    {ID: 0x8001, Size:  64}
+                        , MD4:    {ID: 0x8002, Size:  64}
+                        , MD5:    {ID: 0x8003, Size:  64}
+                        , SHA:    {ID: 0x8004, Size:  64}
+                        , SHA256: {ID: 0x800C, Size:  64}
                         , SHA384: {ID: 0x800D, Size: 128}
                         , SHA512: {ID: 0x800E, Size: 128}}
     static iconst := 0x36
     static oconst := 0x5C
-    if !Algorithms.HasKey(Algo)
+    if (!(Algorithms.HasKey(Algo)))
     {
         return ""
     }
@@ -139,7 +139,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
     static h := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f"]
     static b := h.minIndex()
     hProv := hHash := o := ""
-    if (DllCall("advapi32\CryptAcquireContext", "Ptr*", hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000))
+    if (DllCall("advapi32\CryptAcquireContext", "Ptr*", hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xf0000000))
     {
         if (DllCall("advapi32\CryptCreateHash", "Ptr", hProv, "UInt", algid, "UInt", 0, "UInt", 0, "Ptr*", hHash))
         {
@@ -160,7 +160,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
             }
             DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
         }
-        DllCall("advapi32\CryptreleaseContext", "Ptr", hProv, "UInt", 0)
+        DllCall("advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     }
     return o
 }

@@ -4,7 +4,7 @@
 ; Description ...: Checksum: CRC32
 ;                  Calc CRC32-Hash from String / Hex / File
 ;                  https://en.wikipedia.org/wiki/CRC32
-; Version .......: 2014.02.26-1986
+; Version .......: 2014.04.09-1828
 ; Author ........: SKAN
 ; Modified ......: jNizM
 ; ===================================================================================
@@ -37,12 +37,13 @@ CRC32(string, encoding = "UTF-8")
     length := (StrPut(string, encoding) - 1) * chrlength
     VarSetCapacity(data, length, 0)
     StrPut(string, &data, floor(length / chrlength), encoding)
+	hMod := DllCall("Kernel32.dll\LoadLibrary", "Str", "Ntdll.dll")
     SetFormat, Integer, % SubStr((A_FI := A_FormatInteger) "H", 0)
-    CRC32 := DllCall("NTDLL\RtlComputeCrc32", "UInt", 0, "UInt", &data, "UInt", length, "UInt")
+    CRC32 := DllCall("Ntdll.dll\RtlComputeCrc32", "UInt", 0, "UInt", &data, "UInt", length, "UInt")
     CRC := SubStr(CRC32 | 0x1000000000, -7)
     DllCall("User32.dll\CharLower", "Str", CRC)
     SetFormat, Integer, %A_FI%
-    return CRC
+    return CRC, DllCall("Kernel32.dll\FreeLibrary", "Ptr", hMod)
 }
 
 ; HexCRC32 ==========================================================================
@@ -54,25 +55,28 @@ HexCRC32(hexstring)
     {
         NumPut("0x" SubStr(hexstring, 2 * A_Index -1, 2), data, A_Index - 1, "Char")
     }
+	hMod := DllCall("Kernel32.dll\LoadLibrary", "Str", "Ntdll.dll")
     SetFormat, Integer, % SubStr((A_FI := A_FormatInteger) "H", 0)
-    CRC32 := DllCall("NTDLL\RtlComputeCrc32", "UInt", 0, "UInt", &data, "UInt", length, "UInt")
+    CRC32 := DllCall("Ntdll.dll\RtlComputeCrc32", "UInt", 0, "UInt", &data, "UInt", length, "UInt")
     CRC := SubStr(CRC32 | 0x1000000000, -7)
     DllCall("User32.dll\CharLower", "Str", CRC)
     SetFormat, Integer, %A_FI%
-    return CRC
+    return CRC, DllCall("Kernel32.dll\FreeLibrary", "Ptr", hMod)
 }
 
 ; FileCRC32 =========================================================================
 FileCRC32(sFile := "", cSz := 4)
 {
     Bytes := ""
-    cSz := (cSz < 0 || cSz > 8) ? 2**22 : 2**(18 + cSz), VarSetCapacity(Buffer, cSz, 0)
+    cSz := (cSz < 0 || cSz > 8) ? 2**22 : 2**(18 + cSz)
+	VarSetCapacity(Buffer, cSz, 0)
     hFil := DllCall("Kernel32.dll\CreateFile", "Str", sFile, "UInt", 0x80000000, "UInt", 3, "Int", 0, "UInt", 3, "UInt", 0, "Int", 0, "UInt")
     if (hFil < 1)
     {
         return hFil
     }
-    hMod := DllCall("Kernel32.dll\LoadLibrary", "Str", "ntdll.dll"), CRC32 := 0
+    hMod := DllCall("Kernel32.dll\LoadLibrary", "Str", "Ntdll.dll")
+	CRC32 := 0
     DllCall("Kernel32.dll\GetFileSizeEx", "UInt", hFil, "Int64", &Buffer), fSz := NumGet(Buffer, 0, "Int64")
     loop % (fSz // cSz + !!Mod(fSz, cSz))
     {

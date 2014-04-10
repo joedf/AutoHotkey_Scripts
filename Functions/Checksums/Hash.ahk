@@ -4,7 +4,7 @@
 ; Description ...: Hash from String / Hex / File / Address
 ;                  http://en.wikipedia.org/wiki/Hash_function
 ;                  http://en.wikipedia.org/wiki/Cryptographic_hash_function
-; Version .......: 2014.02.26-1986
+; Version .......: 2014.04.09-1828
 ; Author ........: Bentschi
 ; Modified ......: jNizM
 ; ===================================================================================
@@ -19,31 +19,31 @@ SetBatchLines, -1
 ; SCRIPT ============================================================================
 
 str := "The quick brown fox jumps over the lazy dog"
-MsgBox, % "String:`n" (str) "`n`n"
-        . "MD2:`n" MD2(str) "`n`n"
-        . "MD4:`n" MD4(str) "`n`n"
-        . "MD5:`n" MD5(str) "`n`n"
-        . "SHA:`n" SHA(str) "`n`n"
+MsgBox, % "String:`n"    (str)    "`n`n"
+        . "MD2:`n"    MD2(str)    "`n`n"
+        . "MD4:`n"    MD4(str)    "`n`n"
+        . "MD5:`n"    MD5(str)    "`n`n"
+        . "SHA:`n"    SHA(str)    "`n`n"
         . "SHA256:`n" SHA256(str) "`n`n"
         . "SHA384:`n" SHA384(str) "`n`n"
         . "SHA512:`n" SHA512(str) "`n"
 
 hex := "54686520717569636b2062726f776e20666f78206a756d7073206f76657220746865206c617a7920646f67"
-MsgBox, % "Hex:`n" (hex) "`n`n"
-        . "MD2:`n" HexMD2(hex) "`n`n"
-        . "MD4:`n" HexMD4(hex) "`n`n"
-        . "MD5:`n" HexMD5(hex) "`n`n"
-        . "SHA:`n" HexSHA(hex) "`n`n"
+MsgBox, % "Hex:`n"          (hex)    "`n`n"
+        . "MD2:`n"    HexMD2(hex)    "`n`n"
+        . "MD4:`n"    HexMD4(hex)    "`n`n"
+        . "MD5:`n"    HexMD5(hex)    "`n`n"
+        . "SHA:`n"    HexSHA(hex)    "`n`n"
         . "SHA256:`n" HexSHA256(hex) "`n`n"
         . "SHA384:`n" HexSHA384(hex) "`n`n"
         . "SHA512:`n" HexSHA512(hex) "`n"
 
 file := "C:\Windows\notepad.exe"
-MsgBox, % "File:`n" (file) "`n`n"
-        . "MD2:`n" FileMD2(file) "`n`n"
-        . "MD4:`n" FileMD4(file) "`n`n"
-        . "MD5:`n" FileMD5(file) "`n`n"
-        . "SHA:`n" FileSHA(file) "`n`n"
+MsgBox, % "File:`n"          (file)    "`n`n"
+        . "MD2:`n"    FileMD2(file)    "`n`n"
+        . "MD4:`n"    FileMD4(file)    "`n`n"
+        . "MD5:`n"    FileMD5(file)    "`n`n"
+        . "SHA:`n"    FileSHA(file)    "`n`n"
         . "SHA256:`n" FileSHA256(file) "`n`n"
         . "SHA384:`n" FileSHA384(file) "`n`n"
         . "SHA512:`n" FileSHA512(file) "`n"
@@ -178,7 +178,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
     static h := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f"]
     static b := h.minIndex()
     hProv := hHash := o := ""
-    if (DllCall("advapi32\CryptAcquireContext", "Ptr*", hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000))
+    if (DllCall("advapi32\CryptAcquireContext", "Ptr*", hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xf0000000))
     {
         if (DllCall("advapi32\CryptCreateHash", "Ptr", hProv, "UInt", algid, "UInt", 0, "UInt", 0, "Ptr*", hHash))
         {
@@ -199,7 +199,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
             }
             DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
         }
-        DllCall("advapi32\CryPtreleaseContext", "Ptr", hProv, "UInt", 0)
+        DllCall("advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     }
     return o
 }
@@ -221,7 +221,7 @@ CalcHexHash(hexstring, algid)
     VarSetCapacity(data, length, 0)
     loop % length
     {
-        NumPut("0x" SubStr(hexstring, 2 * A_Index -1, 2), data, A_Index - 1, "Char")
+        NumPut("0x" SubStr(hexstring, 2 * A_Index - 1, 2), data, A_Index - 1, "Char")
     }
     return CalcAddrHash(&data, length, algid)
 }

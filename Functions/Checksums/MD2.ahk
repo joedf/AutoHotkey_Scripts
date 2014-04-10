@@ -4,7 +4,7 @@
 ; Description ...: Checksum: MD2
 ;                  Calc MD2-Hash from String / Hex / File / Address
 ;                  http://en.wikipedia.org/wiki/MD2_(cryptography)
-; Version .......: 2014.02.26-1986
+; Version .......: 2014.04.09-1828
 ; Author ........: Bentschi
 ; Modified ......: jNizM
 ; ===================================================================================
@@ -54,7 +54,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
     static h := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f"]
     static b := h.minIndex()
     hProv := hHash := o := ""
-    if (DllCall("advapi32\CryptAcquireContext", "Ptr*", hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000))
+    if (DllCall("advapi32\CryptAcquireContext", "Ptr*", hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xf0000000))
     {
         if (DllCall("advapi32\CryptCreateHash", "Ptr", hProv, "UInt", algid, "UInt", 0, "UInt", 0, "Ptr*", hHash))
         {
@@ -75,7 +75,7 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
             }
             DllCall("advapi32\CryptDestroyHash", "Ptr", hHash)
         }
-        DllCall("advapi32\CryptreleaseContext", "Ptr", hProv, "UInt", 0)
+        DllCall("advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     }
     return o
 }
@@ -97,7 +97,7 @@ CalcHexHash(hexstring, algid)
     VarSetCapacity(data, length, 0)
     loop % length
     {
-        NumPut("0x" SubStr(hexstring, 2 * A_Index -1, 2), data, A_Index - 1, "Char")
+        NumPut("0x" SubStr(hexstring, 2 * A_Index - 1, 2), data, A_Index - 1, "Char")
     }
     return CalcAddrHash(&data, length, algid)
 }
