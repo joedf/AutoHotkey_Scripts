@@ -12,13 +12,18 @@ Hash from String, Hex & File
 * Secure Salted
 
 ### Conversion
-* BaseConversion
+* BaseConversion via Mathematica (2 - 16)
+* BaseConversion via DllCall (2 - 36)
 * Binary <--> Octal
 * Decimal <--> Binary
 * Decimal <--> Octal
 
 ### Fonts
 * RegisterFonts
+
+### Ohters
+* Seconds to String (secsToStr)
+* SEDOL
 
 
 ## Contributing

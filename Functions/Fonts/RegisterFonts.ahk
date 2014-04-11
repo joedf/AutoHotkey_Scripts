@@ -3,7 +3,6 @@
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: RegisterFonts
 ;                  http://www.marshwiggle.net/regfont/
-; Version .......: v0.3
 ; Modified ......: 2014.04.11-1218
 ; Author ........: jNizM
 ; Licence .......: WTFPL (http://www.wtfpl.net/txt/copying/)
