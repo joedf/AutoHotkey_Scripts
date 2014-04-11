@@ -17,6 +17,8 @@ Hash from String, Hex & File
 * Decimal <--> Binary
 * Decimal <--> Octal
 
+### Fonts
+* RegisterFonts
 
 
 ## Contributing
