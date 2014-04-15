@@ -23,6 +23,7 @@ Hash from String, Hex & File
 * RegisterFonts
 
 ### Ohters
+* GetWeekday
 * Seconds to String (secsToStr)
 * SEDOL
 
