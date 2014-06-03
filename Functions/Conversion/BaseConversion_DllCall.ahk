@@ -1,11 +1,11 @@
 ﻿; ===================================================================================
-; AHK Version ...: AHK_L 1.1.14.03 x64 Unicode
+; AHK Version ...: AHK_L 1.1.15.00 x64 Unicode
 ; Win Version ...: Windows 7 Professional x64 SP1
 ; Description ...: BaseConversion
 ;                  Convert Base from 2 - 36 via DllCall
 ;                  http://msdn.microsoft.com/de-de/library/85zk715d.aspx
 ;                  http://msdn.microsoft.com/en-us/library/yakksftt.aspx
-; Modified ......: 2014.04.10-2012
+; Modified ......: 2014.06.02-1826
 ; Author ........: Laszlo
 ; Modified ......: Gogo (Guests), jNizM
 ; ===================================================================================
@@ -41,9 +41,11 @@ ExitApp
 
 ConvertBase(InputBase, OutputBase, nptr)
 {
+    static u := A_IsUnicode ? "_wcstoui64" : "_strtoui64"
+    static v := A_IsUnicode ? "_i64tow"    : "_i64toa"
     VarSetCapacity(s, 66, 0)
-    value := DllCall("msvcrt.dll\_wcstoui64", "Str", nptr, "Uint", 0, "UInt", InputBase, "CDECL Int64")
-    DllCall("msvcrt.dll\_i64tow", "Int64", value, "Str", s, "UInt", OutputBase, "CDECL")
+    value := DllCall("msvcrt.dll\" u, "Str", nptr, "UInt", 0, "UInt", InputBase, "CDECL Int64")
+    DllCall("msvcrt.dll\" v, "Int64", value, "Str", s, "UInt", OutputBase, "CDECL")
     return s
 }
 

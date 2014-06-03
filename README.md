@@ -17,6 +17,8 @@ Hash from String, Hex & File
 * Binary <--> Octal
 * Decimal <--> Binary
 * Decimal <--> Octal
+* Hex to Text-String
+* Text-String to Hex
 * Temperature
 
 ### Fonts
