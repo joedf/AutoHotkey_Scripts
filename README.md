@@ -19,6 +19,8 @@ Hash from String, Hex & File
 * Decimal <--> Octal
 * Hex to Text-String
 * Text-String to Hex
+* GetCurrencyFormat
+* GetNumberFormat
 * Temperature
 
 ### Fonts
