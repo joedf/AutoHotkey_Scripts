@@ -19,7 +19,7 @@ SetBatchLines, -1
 ; SCRIPT ============================================================================
 
 MsgBox % GetCurrencyFormat(1337.37)            ; 0x0400 LOCALE_SYSTEM_DEFAULT
-MsgBox % GetCurrencyFormat(1337.37, 0x0809)    ; 0x0809 [en-GB] nglish (United Kingdom)
+MsgBox % GetCurrencyFormat(1337.37, 0x0809)    ; 0x0809 [en-GB] English (United Kingdom)
 MsgBox % GetCurrencyFormat(1337.37, 0x0409)    ; 0x0409 [en-US] English (United States)
 MsgBox % GetCurrencyFormat(1337.37, 0x0407)    ; 0x0407 [de-DE] German (Germany)
 

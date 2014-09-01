@@ -26,7 +26,10 @@ Hash from String, Hex & File
 ### Fonts
 * RegisterFonts
 
-### Ohters
+### Maths
+* msvcrt.dll Functions
+
+### Others
 * GetWeekday
 * Seconds to String (secsToStr)
 * SEDOL
