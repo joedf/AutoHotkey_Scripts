@@ -271,7 +271,7 @@ logb(x)
 ; Description ..: Calculates x raised to the power of y.
 ; Links.........: http://msdn.microsoft.com/en-us/library/dt5dakze.aspx
 ; ===============================================================================================================================
-pow(x, y) ; Calculates x raised to the power of y (pow).
+pow(x, y)
 {
     return DllCall("msvcrt.dll\pow", "Double", x, "Double", y, "CDECL Double")
 }
